@@ -10,5 +10,11 @@
 			"matches": ["*://*.reddit.com/*"],
 			"js": ["dist/content-script.js"]
 		}
+	],
+	"web_accessible_resources": [
+		{
+			"resources": ["assets/version-history-svgrepo-com.svg"],
+			"matches": ["*://*.reddit.com/*"]
+		}
 	]
 }

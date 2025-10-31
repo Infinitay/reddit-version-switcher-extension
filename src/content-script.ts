@@ -45,16 +45,65 @@ import { detectRedditVersion, RedditDomains, RedditVersion } from "./RedditVersi
 		const header = document.getElementById("header-bottom-right");
 		if (header) {
 			const logoutForm = header.querySelector("form.logout");
-			const switchLink = document.createElement("a");
-			switchLink.className = "pref-lang";
-			switchLink.textContent = "switch to new reddit";
-			switchLink.style.cursor = "pointer";
-			switchLink.onclick = () => switchRedditVersions(RedditVersion.NEW);
+			const notificationsElement = header.querySelector("#notifications");
+			const svgUrl = chrome.runtime.getURL("assets/version-history-svgrepo-com.svg");
+			const switchVersionIMG = document.createElement("img");
+			switchVersionIMG.src = svgUrl;
+			switchVersionIMG.alt = "Switch to new reddit";
+			switchVersionIMG.style.height = `${18 * ((notificationsElement?.clientHeight ?? 12) / 12)}px`;
+			switchVersionIMG.style.width = `${18 * ((notificationsElement?.clientWidth ?? 12) / 12)}px`;
+			// switchVersionIMG.style.mixBlendMode = "difference";
+			// switchVersionIMG.style.filter = "invert(100%) sepia(0%) saturate(2%) hue-rotate(231deg) brightness(110%) contrast(101%)";
+			switchVersionIMG.style.verticalAlign = "middle";
+			switchVersionIMG.onclick = () => switchRedditVersions(RedditVersion.NEW);
+			switchVersionIMG.style.cursor = "pointer";
+
+			// Dynamically set filter based on background color
+			const headerBg = window.getComputedStyle(header).backgroundColor;
+			function getLuminance(rgb: string): number {
+				let m = rgb.match(/rgba?\((\d+), (\d+), (\d+)/);
+				if (!m) return 255; // fallback to light
+				if (rgb === "rgba(0, 0, 0, 0)") {
+					// Transparent background so lets pull the parent background
+					const srHeaderArea = document.getElementById("sr-header-area");
+					if (srHeaderArea) {
+						const parentBg = window.getComputedStyle(srHeaderArea).backgroundColor;
+						m = parentBg.match(/rgba?\((\d+), (\d+), (\d+)(, ([\d.]+%?))?\)/);
+						if (!m) return 255;
+						if (parseFloat(m[5]) <= 0.3) {
+							// 5th capture group is alpha, 4th includes comma
+							const headerArea = document.getElementById("header");
+							if (headerArea) {
+								const headerAreaBg = window.getComputedStyle(headerArea).backgroundColor;
+								m = headerAreaBg.match(/rgba?\((\d+), (\d+), (\d+)(, ([\d.]+%?))?\)/);
+								if (!m) return 255;
+								if (parseFloat(m[5]) <= 0.3) {
+									return 255; // still transparent, fallback to light
+								}
+							}
+						}
+					}
+				}
+				const r = parseInt(m[1]),
+					g = parseInt(m[2]),
+					b = parseInt(m[3]);
+				return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+			}
+			const luminance = getLuminance(headerBg);
+			if (luminance < 128) {
+				// dark background, make icon light
+				switchVersionIMG.style.filter = "invert(1) brightness(2)";
+			} else {
+				// light background, use default
+				switchVersionIMG.style.filter = "none";
+			}
+
 			if (logoutForm && logoutForm.parentNode) {
-				logoutForm.parentNode.insertBefore(switchLink, logoutForm);
+				logoutForm.parentNode.insertBefore(switchVersionIMG, logoutForm);
 				logoutForm.parentNode.insertBefore(createSeparator(), logoutForm);
 			} else {
-				header.appendChild(switchLink);
+				header.appendChild(switchVersionIMG);
+				header.appendChild(createSeparator());
 			}
 		}
 	}
