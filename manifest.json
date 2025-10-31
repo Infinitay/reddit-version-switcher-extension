@@ -5,9 +5,6 @@
 	"description": "Easily switch between the old and new versions of Reddit",
 	"permissions": ["scripting", "activeTab"],
 	"host_permissions": ["https://old.reddit.com/*", "https://sh.reddit.com/*", "https://www.reddit.com/*"],
-	"background": {
-		"service_worker": "background.js"
-	},
 	"content_scripts": [
 		{
 			"matches": ["https://old.reddit.com/*"],
