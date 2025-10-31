@@ -1,18 +1,14 @@
 {
 	"manifest_version": 3,
 	"name": "Reddit Version Switcher",
-	"version": "1.1.0",
+	"version": "1.2",
 	"description": "Easily switch between the old and new versions of Reddit",
-	"permissions": ["scripting", "activeTab"],
-	"host_permissions": ["https://old.reddit.com/*", "https://sh.reddit.com/*", "https://www.reddit.com/*"],
+	"permissions": ["scripting", "activeTab", "cookies"],
+	"host_permissions": ["*://*.reddit.com/*"],
 	"content_scripts": [
 		{
-			"matches": ["https://old.reddit.com/*"],
-			"js": ["contentScript.js"]
-		},
-		{
-			"matches": ["https://sh.reddit.com/*", "https://www.reddit.com/*"],
-			"js": ["contentScript.js"]
+			"matches": ["*://*.reddit.com/*"],
+			"js": ["dist/content-script.js"]
 		}
 	]
 }
