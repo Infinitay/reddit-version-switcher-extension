@@ -1,7 +1,7 @@
 {
 	"manifest_version": 3,
 	"name": "Reddit Version Switcher",
-	"version": "1.0.1",
+	"version": "1.2.0",
 	"description": "Easily switch between the old and new versions of Reddit",
 	"permissions": ["scripting", "activeTab"],
 	"host_permissions": ["https://old.reddit.com/*", "https://sh.reddit.com/*", "https://www.reddit.com/*"],

@@ -19,17 +19,16 @@
 		const header = document.getElementById("header-bottom-right");
 		if (header) {
 			const logoutForm = header.querySelector("form.logout");
-			const btn = document.createElement("button");
-			btn.textContent = "Switch to New Reddit";
-			btn.style.marginRight = "8px";
-			btn.style.padding = "2px 8px";
-			btn.style.cursor = "pointer";
-			btn.onclick = switchToNewReddit;
+			const switchLink = document.createElement("a");
+			switchLink.className = "pref-lang";
+			switchLink.textContent = "switch to new reddit";
+			switchLink.style.cursor = "pointer";
+			switchLink.onclick = switchToNewReddit;
 			if (logoutForm) {
-				logoutForm.parentNode.insertBefore(btn, logoutForm);
+				logoutForm.parentNode.insertBefore(switchLink, logoutForm);
 				logoutForm.parentNode.insertBefore(createSeparator(), logoutForm);
 			} else {
-				header.appendChild(btn);
+				header.appendChild(switchLink);
 			}
 		}
 	}
