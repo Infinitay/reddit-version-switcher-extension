@@ -19,7 +19,7 @@
 			btn.style.cursor = "pointer";
 			btn.onclick = switchToNewReddit;
 			if (logoutLink) {
-				header.insertBefore(btn, logoutLink);
+				logoutLink.parentNode.insertBefore(btn, logoutLink);
 			} else {
 				header.appendChild(btn);
 			}
