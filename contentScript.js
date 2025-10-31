@@ -1,4 +1,5 @@
 (function () {
+	const isOldReddit = location.hostname === "old.reddit.com";
 	const isNewReddit = location.hostname === "sh.reddit.com" || location.hostname === "www.reddit.com";
 
 	function switchToNewReddit() {
