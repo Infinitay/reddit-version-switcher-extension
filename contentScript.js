@@ -7,19 +7,27 @@
 		window.location.href = newUrl;
 	}
 
+	function createSeparator() {
+		const span = document.createElement("span");
+		span.className = "separator";
+		span.textContent = "|";
+		return span;
+	}
+
 	if (isOldReddit) {
 		// Insert button before logout in #header-bottom-right
 		const header = document.getElementById("header-bottom-right");
 		if (header) {
-			const logoutLink = Array.from(header.querySelectorAll("a")).find((a) => a.textContent.trim().toLowerCase() === "logout");
+			const logoutForm = header.querySelector("form.logout");
 			const btn = document.createElement("button");
 			btn.textContent = "Switch to New Reddit";
 			btn.style.marginRight = "8px";
 			btn.style.padding = "2px 8px";
 			btn.style.cursor = "pointer";
 			btn.onclick = switchToNewReddit;
-			if (logoutLink) {
-				logoutLink.parentNode.insertBefore(btn, logoutLink);
+			if (logoutForm) {
+				logoutForm.parentNode.insertBefore(btn, logoutForm);
+				logoutForm.parentNode.insertBefore(createSeparator(), logoutForm);
 			} else {
 				header.appendChild(btn);
 			}
